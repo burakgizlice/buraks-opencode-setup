@@ -1,0 +1,148 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "shell": "/bin/zsh",
+  "share": "disabled",
+  "autoupdate": "notify",
+  "snapshot": true,
+
+  // ★WIRE model tiers ---------------------------------------------------
+  "model": "openrouter/deepseek-v4-pro",
+  "small_model": "openrouter/deepseek-v4-flash",
+
+  "subagent_depth": 1,
+
+  "provider": {
+    "openrouter": {
+      "options": {
+        "setCacheKey": true
+      },
+      "whitelist": [
+        "z-ai/glm-5.2",
+        "deepseek-v4-pro",
+        "deepseek-v4-flash",
+        "<mimo-v2.5-pro-id>"
+      ]
+    }
+  },
+  "enabled_providers": ["openrouter"],
+
+  "tool_output": { "max_lines": 300, "max_bytes": 12288 },
+
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 4,
+    "preserve_recent_tokens": 12000
+  },
+
+  "agent": {
+    "plan": {
+      "mode": "primary",
+      "model": "openrouter/z-ai/glm-5.2",
+      "temperature": 0.2,
+      "permission": { "edit": "deny", "bash": "ask" },
+      "prompt": "{file:./agents/plan.md}"
+    },
+    "build": {
+      "mode": "primary",
+      "model": "openrouter/deepseek-v4-pro",
+      "temperature": 0.1,
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "*": "ask",
+          "rg *": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "ls *": "allow",
+          "cat *": "allow"
+        }
+      },
+      "prompt": "{file:./agents/build.md}"
+    },
+    "build-fast": {
+      "mode": "primary",
+      "model": "openrouter/<mimo-v2.5-pro-id>",
+      "temperature": 0,
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "*": "ask",
+          "rg *": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "ls *": "allow",
+          "cat *": "allow"
+        }
+      },
+      "prompt": "{file:./agents/build.md}"
+    },
+    "explore": {
+      "mode": "subagent",
+      "model": "openrouter/deepseek-v4-flash",
+      "temperature": 0,
+      "hidden": false,
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "deny",
+          "rg *": "allow",
+          "ls *": "allow",
+          "git log*": "allow"
+        },
+        "task": "deny",
+        "todowrite": "deny",
+        "webfetch": "deny"
+      },
+      "prompt": "{file:./agents/explore.md}"
+    },
+    "general": {
+      "mode": "subagent",
+      "model": "openrouter/deepseek-v4-pro",
+      "permission": { "edit": "deny" }
+    },
+    "title":     { "model": "openrouter/deepseek-v4-flash" },
+    "summary":   { "model": "openrouter/deepseek-v4-flash" },
+    "compaction":{ "model": "openrouter/deepseek-v4-flash" }
+  },
+
+  "default_agent": "build",
+
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts",".tsx",".js",".jsx",".mts",".cts"]
+    },
+    "pyright": {
+      "command": ["pyright-langserver", "--stdio"],
+      "extensions": [".py"]
+    }
+  },
+
+  "formatter": {
+    "prettier": {
+      "command": ["npx","--yes","prettier","--write"],
+      "extensions": [".ts",".tsx",".js",".jsx",".json",".jsonc",".md"]
+    },
+    "biome":  { "disabled": true },
+    "ruff":   { "command": ["ruff","format"], "extensions": [".py"] },
+    "black":  { "disabled": true }
+  },
+
+  "permission": {
+    "edit": "ask",
+    "bash": { "*": "ask" },
+    "external_directory": { "*": "ask" },
+    "webfetch": "allow",
+    "websearch": "allow"
+  },
+
+  "experimental": {
+    "primary_tools": ["lsp"],
+    "batch_tool": true
+  },
+
+  "instructions": ["AGENTS.md"]
+}
