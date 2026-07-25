@@ -6,8 +6,8 @@
   "snapshot": true,
 
   // ★WIRE model tiers ---------------------------------------------------
-  "model": "openrouter/deepseek-v4-pro",
-  "small_model": "openrouter/deepseek-v4-flash",
+  "model": "deepseek/deepseek-v4-pro",
+  "small_model": "deepseek/deepseek-v4-flash",
 
   "subagent_depth": 1,
 
@@ -18,8 +18,8 @@
       },
       "whitelist": [
         "z-ai/glm-5.2",
-        "deepseek-v4-pro",
-        "deepseek-v4-flash",
+        "deepseek/deepseek-v4-pro",
+        "deepseek/deepseek-v4-flash",
         "<mimo-v2.5-pro-id>"
       ]
     }
@@ -38,14 +38,14 @@
   "agent": {
     "plan": {
       "mode": "primary",
-      "model": "openrouter/z-ai/glm-5.2",
+      "model": "z-ai/glm-5.2",
       "temperature": 0.2,
       "permission": { "edit": "deny", "bash": "ask" },
       "prompt": "{file:./agents/plan.md}"
     },
     "build": {
       "mode": "primary",
-      "model": "openrouter/deepseek-v4-pro",
+      "model": "deepseek/deepseek-v4-pro",
       "temperature": 0.1,
       "permission": {
         "edit": "allow",
@@ -63,7 +63,7 @@
     },
     "build-fast": {
       "mode": "primary",
-      "model": "openrouter/<mimo-v2.5-pro-id>",
+      "model": "<mimo-v2.5-pro-id>",   // [T4] ★WIRE — replace with real ID
       "temperature": 0,
       "permission": {
         "edit": "allow",
@@ -81,7 +81,7 @@
     },
     "explore": {
       "mode": "subagent",
-      "model": "openrouter/deepseek-v4-flash",
+      "model": "deepseek/deepseek-v4-flash",
       "temperature": 0,
       "hidden": false,
       "permission": {
@@ -100,12 +100,12 @@
     },
     "general": {
       "mode": "subagent",
-      "model": "openrouter/deepseek-v4-pro",
+      "model": "deepseek/deepseek-v4-pro",
       "permission": { "edit": "deny" }
     },
-    "title":     { "model": "openrouter/deepseek-v4-flash" },
-    "summary":   { "model": "openrouter/deepseek-v4-flash" },
-    "compaction":{ "model": "openrouter/deepseek-v4-flash" }
+    "title":     { "model": "deepseek/deepseek-v4-flash" },
+    "summary":   { "model": "deepseek/deepseek-v4-flash" },
+    "compaction":{ "model": "deepseek/deepseek-v4-flash" }
   },
 
   "default_agent": "build",
