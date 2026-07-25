@@ -6,8 +6,8 @@
   "snapshot": true,
 
   // ★WIRE model tiers ---------------------------------------------------
-  "model": "deepseek/deepseek-v4-pro",
-  "small_model": "deepseek/deepseek-v4-flash",
+  "model": "openrouter/deepseek/deepseek-v4-pro",
+  "small_model": "openrouter/deepseek/deepseek-v4-flash",
 
   "subagent_depth": 1,
 
@@ -32,14 +32,14 @@
   "agent": {
     "plan": {
       "mode": "primary",
-      "model": "z-ai/glm-5.2",
+      "model": "openrouter/z-ai/glm-5.2",
       "temperature": 0.2,
       "permission": { "edit": "deny", "bash": "ask" },
       "prompt": "{file:./agents/plan.md}"
     },
     "build": {
       "mode": "primary",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "openrouter/deepseek/deepseek-v4-pro",
       "temperature": 0.1,
       "permission": {
         "edit": "allow",
@@ -75,7 +75,7 @@
     },
     "explore": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "openrouter/deepseek/deepseek-v4-flash",
       "temperature": 0,
       "hidden": false,
       "permission": {
@@ -94,12 +94,12 @@
     },
     "general": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "openrouter/deepseek/deepseek-v4-pro",
       "permission": { "edit": "deny" }
     },
-    "title":     { "model": "deepseek/deepseek-v4-flash" },
-    "summary":   { "model": "deepseek/deepseek-v4-flash" },
-    "compaction":{ "model": "deepseek/deepseek-v4-flash" }
+    "title":     { "model": "openrouter/deepseek/deepseek-v4-flash" },
+    "summary":   { "model": "openrouter/deepseek/deepseek-v4-flash" },
+    "compaction":{ "model": "openrouter/deepseek/deepseek-v4-flash" }
   },
 
   "default_agent": "build",
@@ -138,5 +138,12 @@
     "batch_tool": true
   },
 
-  "instructions": ["AGENTS.md"]
+  "instructions": ["AGENTS.md"],
+
+  "mcp": {
+    "enterflow": {
+      "command": ["/home/burak/MrEngineer/enterflow/.venv/bin/python",
+                  "/home/burak/MrEngineer/enterflow/server.py"]
+    }
+  }
 }
